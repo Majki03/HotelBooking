@@ -19,7 +19,7 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        catch(DateInvalidException ex)
+        catch (DateInvalidException ex)
         {
             _logger.LogWarning(ex, ex.Message);
             context.Response.StatusCode = 406;
@@ -28,7 +28,7 @@ public class ExceptionHandlingMiddleware
         catch (Exception ex)
         {
             _logger.LogWarning(ex, ex.Message);
-            context.Response.StatusCode = 404;
+            context.Response.StatusCode = 500;
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
     }

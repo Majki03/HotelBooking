@@ -19,12 +19,12 @@ public class Repository(DataContext context) : IRepository
         return user;
     }
 
-    public async Task<bool> EmailExistsAsnyc(string email)
+    public async Task<bool> EmailExistsAsync(string email)
     {
         return await context.Users.AnyAsync(u => u.Email == email);
     }
 
-    public async Task<bool> UsernameExistsAsnyc(string username)
+    public async Task<bool> UsernameExistsAsync(string username)
     {
         return await context.Users.AnyAsync(u => u.Username == username);
     }

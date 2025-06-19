@@ -13,7 +13,7 @@ public class ResetPasswordHandler(IRepository repository) : IRequestHandler<Rese
 {
     public async Task<bool> Handle(ResetPasswordQuery request, CancellationToken cancellationToken)
     {
-        var exisitngEmail = await repository.EmailExistsAsnyc(request.Email);
+        var exisitngEmail = await repository.EmailExistsAsync(request.Email);
 
         if (exisitngEmail is false)
             throw new UserNotFoundException();

@@ -12,8 +12,8 @@ public interface IRepository
 {
     #region User
     public Task<UserEntity> AddAsync(UserEntity user);
-    public Task<bool> EmailExistsAsnyc(string email);
-    public Task<bool> UsernameExistsAsnyc(string username);
+    public Task<bool> EmailExistsAsync(string email);
+    public Task<bool> UsernameExistsAsync(string username);
     public Task<UserEntity> GetByUsernameAsync(string username);
     public Task<UserEntity> GetUserByIdAsync(int id);
     #endregion

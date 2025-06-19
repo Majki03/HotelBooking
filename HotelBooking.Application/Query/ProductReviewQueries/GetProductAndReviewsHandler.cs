@@ -18,8 +18,10 @@ public class GetProductAndReviewsHandler(IRepository repository) : IRequestHandl
         var product = await repository.GetProductWithReviewsAsync(request.ProductId) ?? throw new ProductNotFoundException();
 
         // Overall rating calculation
-        double overallRating = Math.Round(product.Reviews.Average(r => r.Rating), 2);
-
+        double overallRating = product.Reviews.Any()
+            ? Math.Round(product.Reviews.Average(r => r.Rating), 2)
+            : 0;
+            
         var reviewsMapped = product.Reviews
             .Where(p => !p.IsDeleted)
             .Select(p => new ReviewDTO
