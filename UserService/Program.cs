@@ -11,6 +11,8 @@ using User.Application.Services;
 using User.Domain.Seeders;
 using System.Security.Claims;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace UserService;
 
@@ -23,10 +25,14 @@ public class Program
         // Add services to the container.
         builder.Services.AddDbContext<DataContext>(options =>
             options.UseInMemoryDatabase("UserDb"));
+
         builder.Services.AddScoped<IRepository, Repository>();
         builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
         builder.Services.AddScoped<IJWTTokenService, JWTTokenService>();
-        builder.Services.AddScoped<IRoleSeeder, RoleSeeder>();
+
+        builder.Services.AddIdentity<UserEntity, Role>()
+            .AddEntityFrameworkStores<DataContext>()
+            .AddDefaultTokenProviders();
 
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(User.Application.AssemblyReference).Assembly));
 
@@ -122,9 +128,11 @@ public class Program
 
         app.MapControllers();
 
-        var scope = app.Services.CreateScope();
-        var seeder = scope.ServiceProvider.GetRequiredService<IRoleSeeder>();
-        await seeder.SeedAsync();
+        using (var scope = app.Services.CreateScope()) 
+        {
+            var services = scope.ServiceProvider;
+            await RoleSeeder.SeedAsync(services);
+        }
 
         app.Run();
     }
