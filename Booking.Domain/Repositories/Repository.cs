@@ -1,4 +1,5 @@
 ﻿using Booking.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Booking.Domain.Repositories;
 
@@ -13,18 +14,22 @@ public class Repository(DataContext context) : IRepository
         return booking;
     }
 
-    public Task<IEnumerable<BookingModel>> GetAsync(BookingModel booking)
+    public async Task<IEnumerable<BookingModel>> GetAsync(BookingModel booking)
     {
-        throw new NotImplementedException();
+        return await context.Bookings
+            .ToListAsync();
     }
 
-    public Task<BookingModel> GetByIdAsync(BookingModel booking)
+    public async Task<BookingModel?> GetByIdAsync(BookingModel booking)
     {
-        throw new NotImplementedException();
+        return await context.Bookings
+            .FirstOrDefaultAsync(b => b.Id == booking.Id);
     }
 
-    public Task<BookingModel> UpdateAsync(BookingModel booking)
+    public async Task<BookingModel> UpdateAsync(BookingModel booking)
     {
-        throw new NotImplementedException();
+        context.Bookings.Update(booking);
+        await context.SaveChangesAsync();
+        return booking;
     }
 }

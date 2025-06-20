@@ -11,7 +11,6 @@ using User.Application.Services;
 using User.Domain.Seeders;
 using System.Security.Claims;
 using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace UserService;

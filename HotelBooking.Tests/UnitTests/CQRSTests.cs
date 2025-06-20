@@ -7,7 +7,6 @@ using HotelBooking.Application.Command;
 using HotelBooking.Application.Services;
 using HotelBooking.Domain.Models;
 using HotelBooking.Domain.Repositories;
-using HotelBooking.Application.Services;
 using System.Threading;
 using Moq;
 
