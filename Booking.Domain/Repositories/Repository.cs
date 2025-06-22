@@ -19,13 +19,15 @@ public class Repository(DataContext context) : IRepository
         return await context.Bookings.ToListAsync();
     }
 
-    public Task<BookingModel> GetByIdAsync(BookingModel booking)
+    public async Task<BookingModel?> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await context.Bookings.FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public Task<BookingModel> UpdateAsync(BookingModel booking)
+    public async Task<BookingModel> UpdateAsync(BookingModel booking)
     {
-        throw new NotImplementedException();
+        context.Bookings.Update(booking);
+        await context.SaveChangesAsync();
+        return booking;
     }
 }

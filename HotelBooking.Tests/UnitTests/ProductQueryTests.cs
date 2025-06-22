@@ -4,6 +4,7 @@ using HotelBooking.Domain.Exceptions.ProductExceptions;
 using HotelBooking.Domain.Models;
 using HotelBooking.Domain.Repositories;
 using HotelBooking.Application.Services;
+using HotelBooking.Application.Producer;
 using Moq;
 
 namespace HotelBooking.Tests.UnitTests;
@@ -25,7 +26,8 @@ public class ProductQueryTests
         var mockCache = new Mock<IRedisCacheService>();
         mockCache.Setup(c => c.GetAsync<Product>(cacheKey)).ReturnsAsync(product);
         var mockRepo = new Mock<IRepository>();
-        var handler = new GetProductByIdHandler(mockRepo.Object, mockCache.Object);
+        var mockProducer = new Mock<IKafkaProducer>();
+        var handler = new GetProductByIdHandler(mockRepo.Object, mockCache.Object, mockProducer.Object);
         var query = new GetProductByIdQuery { Id = 1 };
 
         // act
@@ -52,7 +54,8 @@ public class ProductQueryTests
         mockCache.Setup(c => c.GetAsync<Product>(cacheKey)).ReturnsAsync((Product?)null);
         var mockRepo = new Mock<IRepository>();
         mockRepo.Setup(r => r.GetProductByIdAsync(1)).ReturnsAsync(product);
-        var handler = new GetProductByIdHandler(mockRepo.Object, mockCache.Object);
+        var mockProducer = new Mock<IKafkaProducer>();
+        var handler = new GetProductByIdHandler(mockRepo.Object, mockCache.Object, mockProducer.Object);
         var query = new GetProductByIdQuery { Id = 1 };
 
         // act
@@ -74,6 +77,7 @@ public class ProductQueryTests
         var mockCache = new Mock<IRedisCacheService>();
         mockCache.Setup(c => c.GetAsync<Product>(cacheKey)).ReturnsAsync((Product?)null);
         var mockRepo = new Mock<IRepository>();
+        var mockProducer = new Mock<IKafkaProducer>();
         if (scenario == "deleted")
         {
             mockRepo.Setup(r => r.GetProductByIdAsync(1)).ReturnsAsync(new Product { IsDeleted = true });
@@ -82,7 +86,7 @@ public class ProductQueryTests
         {
             mockRepo.Setup(r => r.GetProductByIdAsync(1)).ReturnsAsync((Product?)null);
         }
-        var handler = new GetProductByIdHandler(mockRepo.Object, mockCache.Object);
+        var handler = new GetProductByIdHandler(mockRepo.Object, mockCache.Object, mockProducer.Object);
         var query = new GetProductByIdQuery { Id = 1 };
 
         // act & assert

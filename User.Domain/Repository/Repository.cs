@@ -14,7 +14,11 @@ public class Repository(UserManager<UserEntity> userManager) : IRepository
     #region User
     public async Task<UserEntity> AddAsync(UserEntity user, string password)
     {
-        var result = userManager.CreateAsync(user, password);
+        var result = await userManager.CreateAsync(user, password);
+        if (!result.Succeeded)
+        {
+            throw new Exception(string.Join("; ", result.Errors.Select(e => e.Description)));
+        }
 
         return user;
     }

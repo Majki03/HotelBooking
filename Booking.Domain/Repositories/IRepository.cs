@@ -6,6 +6,6 @@ public interface IRepository
 {
     Task<BookingModel> AddAsync(BookingModel booking);
     Task<IEnumerable<BookingModel>> GetAsync();
-    Task<BookingModel> GetByIdAsync(BookingModel booking);
+    Task<BookingModel?> GetByIdAsync(int id);
     Task<BookingModel> UpdateAsync(BookingModel booking);
 }

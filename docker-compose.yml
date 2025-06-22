@@ -6,6 +6,11 @@ services:
     build:
       context: .
       dockerfile: UserService/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTION_STRING}
+      - Jwt__Key=${JWT_KEY}
+      - Kafka__BootstrapServers=${KAFKA_BOOTSTRAP_SERVERS}
 
   hotelbooking:
     image: ${DOCKER_REGISTRY-}hotelbooking
@@ -15,6 +20,11 @@ services:
     build:
       context: .
       dockerfile: HotelBooking/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTION_STRING}
+      - Jwt__Key=${JWT_KEY}
+      - Kafka__BootstrapServers=${KAFKA_BOOTSTRAP_SERVERS}
 
   bookingservice:
     image: ${DOCKER_REGISTRY-}bookingservice
@@ -24,6 +34,11 @@ services:
     build:
         context: .
         dockerfile: BookingService/Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTION_STRING}
+      - Jwt__Key=${JWT_KEY}
+      - Kafka__BootstrapServers=${KAFKA_BOOTSTRAP_SERVERS}
 
 
   redis:

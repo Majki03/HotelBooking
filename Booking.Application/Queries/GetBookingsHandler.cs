@@ -13,7 +13,7 @@ namespace Booking.Application.Queries
     {
         public async Task<IEnumerable<BookingModel>> Handle(GetBookingsQuery request, CancellationToken cancellationToken)
         {
-            return await repository.GetAsync() ?? throw new NotImplementedException();
+            return await repository.GetAsync();
         }
     }
 }
